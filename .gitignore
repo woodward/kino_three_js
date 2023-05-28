@@ -24,3 +24,8 @@ kino_three_js-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+.idea
+*.iml 
+.DS_Store
+
