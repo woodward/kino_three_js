@@ -1,0 +1,10 @@
+# Components
+
+```elixir
+  Mix.install(
+  [
+    {:kino_three_js, path: "/Users/Greg/Dynamics/Development/kino_three_js", env: :dev}
+  ],
+  lockfile: Path.join("/Users/Greg/Dynamics/Development/kino_three_js", "mix.lock")
+  )
+```
