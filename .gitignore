@@ -29,3 +29,4 @@ kino_three_js-*.tar
 *.iml 
 .DS_Store
 
+/lib/assets/three_js/vendor/ 
