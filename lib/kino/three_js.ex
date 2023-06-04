@@ -6,7 +6,8 @@ defmodule Kino.ThreeJS do
   use Kino.JS, assets_path: "lib/assets/three_js"
   use Kino.JS.Live
 
-  @delta_t_ms 50
+  @thirty_fps 30
+  @delta_t_ms trunc(1 / @thirty_fps * 1000)
 
   defstruct spec: %{}, events: %{}
 
@@ -29,20 +30,21 @@ defmodule Kino.ThreeJS do
   end
 
   @doc false
-  def static(three_js) do
-    data = %{spec: three_js.spec, events: three_js.events}
+  def static(_three_js) do
+    data = %{}
     Kino.JS.new(__MODULE__, data, export_info_string: "three_js")
   end
 
   @impl true
   def init(three_js, ctx) do
     number = Keyword.get(three_js, :number, 4)
-    {:ok, assign(ctx, number: number, time: 0, running?: false)}
+    type = Keyword.get(three_js, :type, :pendulums)
+    {:ok, assign(ctx, number: number, type: type, time: 0, running?: false)}
   end
 
   @impl true
   def handle_connect(ctx) do
-    {:ok, ctx.assigns.number, ctx}
+    {:ok, %{number: ctx.assigns.number, type: ctx.assigns.type}, ctx}
   end
 
   @impl true

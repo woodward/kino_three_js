@@ -14,7 +14,23 @@ Mix.install(
 ## Section
 
 ```elixir
-pendulums = Kino.ThreeJS.new(number: 3)
+Kino.ThreeJS.new(type: :cube)
+```
+
+```elixir
+pendulums = Kino.ThreeJS.new(type: :pendulums, number: 4)
+```
+
+```elixir
+Kino.ThreeJS.start_simulation(pendulums)
+```
+
+```elixir
+Kino.ThreeJS.stop_simulation(pendulums)
+```
+
+```elixir
+pendulums = Kino.ThreeJS.new(type: :pendulums, number: 50)
 ```
 
 ```elixir
