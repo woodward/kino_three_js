@@ -24,6 +24,10 @@ defmodule Kino.ThreeJS do
     Kino.JS.Live.cast(kino, :start_simulation)
   end
 
+  def stop_simulation(kino) do
+    Kino.JS.Live.cast(kino, :stop_simulation)
+  end
+
   @doc false
   def static(three_js) do
     data = %{spec: three_js.spec, events: three_js.events}
@@ -33,7 +37,7 @@ defmodule Kino.ThreeJS do
   @impl true
   def init(three_js, ctx) do
     number = Keyword.get(three_js, :number, 4)
-    {:ok, assign(ctx, number: number, time: 0)}
+    {:ok, assign(ctx, number: number, time: 0, running?: false)}
   end
 
   @impl true
@@ -44,13 +48,22 @@ defmodule Kino.ThreeJS do
   @impl true
   def handle_info({:update_time, time}, ctx) do
     broadcast_event(ctx, "update_time", time)
-    Process.send_after(self(), {:update_time, time + @delta_t_ms}, @delta_t_ms)
+
+    if ctx.assigns.running? do
+      Process.send_after(self(), {:update_time, time + @delta_t_ms}, @delta_t_ms)
+    end
+
     {:noreply, assign(ctx, time: time)}
   end
 
   @impl true
   def handle_cast(:start_simulation, ctx) do
     Process.send_after(self(), {:update_time, @delta_t_ms}, @delta_t_ms)
-    {:noreply, assign(ctx, time: 0)}
+    {:noreply, assign(ctx, time: 0, running?: true)}
+  end
+
+  @impl true
+  def handle_cast(:stop_simulation, ctx) do
+    {:noreply, assign(ctx, running?: false)}
   end
 end

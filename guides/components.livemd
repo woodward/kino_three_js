@@ -20,3 +20,7 @@ pendulums = Kino.ThreeJS.new(number: 3)
 ```elixir
 Kino.ThreeJS.start_simulation(pendulums)
 ```
+
+```elixir
+Kino.ThreeJS.stop_simulation(pendulums)
+```
