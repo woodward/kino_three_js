@@ -18,6 +18,13 @@ defmodule Kino.ThreeJS do
     Kino.JS.Live.new(__MODULE__, three_js)
   end
 
+  def update_time(kino, time) do
+    Kino.JS.Live.cast(kino, {:update_time, time})
+  end
+
+  def start_animation() do
+  end
+
   @doc false
   def static(three_js) do
     data = %{spec: three_js.spec, events: three_js.events}
@@ -26,11 +33,17 @@ defmodule Kino.ThreeJS do
 
   @impl true
   def init(three_js, ctx) do
-    {:ok, assign(ctx, three_js: three_js)}
+    {:ok, assign(ctx, three_js: three_js, time: 0)}
   end
 
   @impl true
   def handle_connect(ctx) do
     {:ok, %{}, ctx}
+  end
+
+  @impl true
+  def handle_cast({:update_time, time}, ctx) do
+    broadcast_event(ctx, "update_time", time)
+    {:noreply, assign(ctx, time: time)}
   end
 end
