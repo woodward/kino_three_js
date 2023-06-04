@@ -3,7 +3,7 @@
 ```elixir
 Mix.install([
   {:kino_three_js,
-   github: "woodward/kino_three_js", commit: "cead11d4f5c3ba044ce9c7909f32c27887eaad39"}
+   github: "woodward/kino_three_js", commit: "5a5ad5d6b2beab4a43a4c3534ba1e439f25f4aed"}
 ])
 ```
 
