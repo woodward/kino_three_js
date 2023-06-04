@@ -1,6 +1,6 @@
 # KinoThreeJs
 
-**TODO: Add description**
+*WORK IN PROGRESS!*  This is a Kino wrapper around [three.js](https://threejs.org/)
 
 ## Installation
 
