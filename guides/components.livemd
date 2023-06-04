@@ -14,9 +14,9 @@ Mix.install(
 ## Section
 
 ```elixir
-pendulums = Kino.ThreeJS.new(number: 4)
+pendulums = Kino.ThreeJS.new(number: 3)
 ```
 
 ```elixir
-Kino.ThreeJS.update_time(pendulums, 1500)
+Kino.ThreeJS.start_simulation(pendulums)
 ```

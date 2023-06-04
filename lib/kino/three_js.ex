@@ -6,6 +6,8 @@ defmodule Kino.ThreeJS do
   use Kino.JS, assets_path: "lib/assets/three_js"
   use Kino.JS.Live
 
+  @delta_t_ms 50
+
   defstruct spec: %{}, events: %{}
 
   @type t :: Kino.JS.Live.t()
@@ -18,11 +20,8 @@ defmodule Kino.ThreeJS do
     Kino.JS.Live.new(__MODULE__, three_js)
   end
 
-  def update_time(kino, time) do
-    Kino.JS.Live.cast(kino, {:update_time, time})
-  end
-
-  def start_animation() do
+  def start_simulation(kino) do
+    Kino.JS.Live.cast(kino, :start_simulation)
   end
 
   @doc false
@@ -33,17 +32,25 @@ defmodule Kino.ThreeJS do
 
   @impl true
   def init(three_js, ctx) do
-    {:ok, assign(ctx, three_js: three_js, time: 0)}
+    number = Keyword.get(three_js, :number, 4)
+    {:ok, assign(ctx, number: number, time: 0)}
   end
 
   @impl true
   def handle_connect(ctx) do
-    {:ok, %{}, ctx}
+    {:ok, ctx.assigns.number, ctx}
   end
 
   @impl true
-  def handle_cast({:update_time, time}, ctx) do
+  def handle_info({:update_time, time}, ctx) do
     broadcast_event(ctx, "update_time", time)
+    Process.send_after(self(), {:update_time, time + @delta_t_ms}, @delta_t_ms)
     {:noreply, assign(ctx, time: time)}
+  end
+
+  @impl true
+  def handle_cast(:start_simulation, ctx) do
+    Process.send_after(self(), {:update_time, @delta_t_ms}, @delta_t_ms)
+    {:noreply, assign(ctx, time: 0)}
   end
 end
